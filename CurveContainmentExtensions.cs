@@ -25,6 +25,16 @@ namespace Autodesk.AutoCAD.Geometry.Extensions
       /// curve for testing, and can optionally be returned
       /// in lieu of the input points by specifying true in
       /// the <paramref name="projected"/> argument.
+      /// 
+      /// The input curve must be closed, planar, and be 
+      /// converable to a Region. Self-intersecting curves 
+      /// may be rejected.
+      /// 
+      /// The input points do not have to lie on the plane
+      /// of the input Curve, as they are projected onto it
+      /// internally. If the <paramref name="projected"/>
+      /// argument is true, the projected point is returned
+      /// in place of the original input point.
       /// </summary>
       /// <remarks>
       /// Older versions of this code used optimized trivial 
@@ -166,6 +176,16 @@ namespace Autodesk.AutoCAD.Geometry.Extensions
             }
             return Region.CreateFromCurves(curves);
          }
+      }
+
+      public static IEnumerable<Point3d> OrthoProject(this IEnumerable<Point3d> points, Plane plane)
+      {
+         if(points == null)
+            throw new ArgumentNullException(nameof(points));
+         if(plane == null)
+            throw new ArgumentNullException(nameof(plane));
+         foreach(Point3d point in points)
+            yield return point.OrthoProject(plane);
       }
 
    }
