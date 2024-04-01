@@ -84,7 +84,7 @@ namespace Autodesk.AutoCAD.Geometry.Extensions
                Plane plane = region.GetPlane();
                foreach(Point3d point in input)
                {
-                  Point3d pointOnPlane = plane.ClosestPointTo(point);
+                  Point3d pointOnPlane = point.OrthoProject(plane));
                   if(brep.Contains(pointOnPlane, includeOnBoundary))
                      yield return projected ? pointOnPlane : point;
                }
@@ -109,6 +109,20 @@ namespace Autodesk.AutoCAD.Geometry.Extensions
          {
             return result == PointContainment.Inside || ent is AcBr.Face
                || onEdge && ent is AcBr.Edge;
+         }
+      }
+
+      public static PointContainment GetContainment(this Brep brep, Point3d pointOnPlane)
+      {
+         PointContainment result = PointContainment.Outside;
+         using(BrepEntity ent = brep.GetPointContainment(pointOnPlane, out result))
+         {
+            if(ent is AcBr.Face)
+               return PointContainment.Inside;
+            else if(ent is AcBr.Edge)
+               return PointContainment.OnBoundary;
+            else
+               return PointContainment.Outside;
          }
       }
 
