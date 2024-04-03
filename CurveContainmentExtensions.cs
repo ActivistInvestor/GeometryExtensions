@@ -94,7 +94,7 @@ namespace Autodesk.AutoCAD.Geometry.Extensions
                Plane plane = region.GetPlane();
                foreach(Point3d point in input)
                {
-                  Point3d pointOnPlane = point.OrthoProject(plane));
+                  Point3d pointOnPlane = point.OrthoProject(plane);
                   if(brep.Contains(pointOnPlane, includeOnBoundary))
                      yield return projected ? pointOnPlane : point;
                }
