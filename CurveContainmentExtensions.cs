@@ -27,7 +27,7 @@ namespace Autodesk.AutoCAD.Geometry.Extensions
       /// the <paramref name="projected"/> argument.
       /// 
       /// The input curve must be closed, planar, and be 
-      /// converable to a Region. Self-intersecting curves 
+      /// convertable to a Region. Self-intersecting curves 
       /// may be rejected.
       /// 
       /// The input points do not have to lie on the plane
